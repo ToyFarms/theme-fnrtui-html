@@ -1,11 +1,11 @@
-document.addEventListener("DOMContentLoaded", () => {
+function initializeSwiper() {
   var thumbSwiper = new Swiper(".thumb-swiper", {
     spaceBetween: 10,
     slidesPerView: 4,
     watchSlidesProgress: true,
   });
 
-  var mainSwiper = new Swiper(".main-swiper", {
+  new Swiper(".main-swiper", {
     spaceBetween: 30,
     loop: true,
     navigation: {
@@ -16,7 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
       swiper: thumbSwiper,
     },
   });
+}
 
+function initializeProductForm() {
   /** @type {HTMLFormElement} */
   const form = document.querySelector("#product-form");
   form.addEventListener("submit", (e) => {
@@ -36,9 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
       `Product (color ${formData.get("color")}, size ${formData.get("size")}) ${msg[action] || "[unknown action]"}`
     );
   });
+}
 
-  defaultReview.map((r) => pushNewReview(r));
-
+function initializeReviewForm() {
   document.querySelector("#review-form-open-btn").addEventListener("click", () => {
     pushPopup("#review-form-popup");
 
@@ -90,6 +92,14 @@ document.addEventListener("DOMContentLoaded", () => {
       popPopup();
     });
   });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initializeSwiper();
+  initializeProductForm();
+  // initialize default review
+  defaultReview.map((r) => pushNewReview(r));
+  initializeReviewForm();
 });
 
 /**
@@ -107,14 +117,10 @@ document.addEventListener("DOMContentLoaded", () => {
  * @param {number} [insertIdx=1]
  * */
 function pushNewReview(review, insertIdx = -1) {
-  /**
-   * @type {HTMLTemplateElement}
-   * */
+  /** @type {HTMLTemplateElement} */
   const reviewTemplate = document.querySelector("#review-template");
 
-  /**
-   * @type {HTMLDivElement}
-   * */
+  /** @type {HTMLDivElement} */
   const reviews = document.querySelector("#review-list");
 
   const reviewElement = reviewTemplate.content.cloneNode(true);
